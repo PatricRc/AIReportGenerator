@@ -148,9 +148,11 @@ def generate_pdf(template):
         sanitized_line = line.encode("latin-1", "replace").decode("latin-1")
         pdf.multi_cell(0, 10, sanitized_line)
     
-    pdf_output = io.BytesIO()
-    pdf.output(name=pdf_output)  # Specify the name as the BytesIO object
-    pdf_output.seek(0)  # Move to the beginning of the buffer
+    # Output PDF content to a string
+    pdf_output_content = pdf.output(dest='S').encode('latin1')  # Save PDF to string in binary
+    
+    # Write the binary content to BytesIO
+    pdf_output = io.BytesIO(pdf_output_content)
     return pdf_output
 
 if __name__ == "__main__":
