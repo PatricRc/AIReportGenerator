@@ -61,75 +61,37 @@ def generate_template(df, api_key):
     I have a dataset with the following columns:
     {', '.join(df.columns)}.
 
-    Please generate a detailed data analytics project template with the following structure:
+    Here are the first few rows of the dataset:
+    {df.head(5).to_string(index=False)}
+
+    Please generate a detailed and well-formatted data analytics project report with the following structure:
 
     # Project Background
-    Background about the company, including the industry, active years, business model, and key business metrics. Explain this from the POV of a data analyst who is working at the company.
+    Provide a detailed background about the company, its industry, business model, and any key metrics related to the project. Include specifics that are relevant to the dataset provided.
 
-    Insights and recommendations are provided on the following key areas:
-    - **Category 1:** 
-    - **Category 2:** 
-    - **Category 3:** 
-    - **Category 4:** 
+    # Insights and Recommendations
+    Provide insights derived from the dataset in the following categories:
+    - **Category 1:** Explain the trends or findings for this category.
+    - **Category 2:** Highlight demographic-related insights or trends.
+    - **Category 3:** Focus on operational or process-related insights.
+    - **Category 4:** Summarize recovery patterns or efficiency insights.
 
-    The Python pandas queries used to inspect and clean the data for this analysis can be found here [link].
+    Include actionable recommendations for each category that stakeholders can consider.
 
-    Targeted Python pandas queries regarding various business questions can be found here [link].
-
-    An interactive Power BI dashboard used to report and explore sales trends can be found here [link].
-
-    # Data Structure & Initial Checks
-    The company’s main database structure as seen below consists of four tables: Table1, Table2, Table3, Table4, with a total row count of X records. A description of each table is as follows:
-    - **Table 1:**
-    - **Table 2:**
-    - **Table 3:**
-    - **Table 4:**
-    [Entity Relationship Diagram here]
+    # Data Structure and Initial Analysis
+    Describe the structure of the data, including a summary of the number of records, data types, and any preprocessing steps performed.
 
     # Executive Summary
-    ## Overview of Findings
-    Explain the overarching findings, trends, and themes in 2-3 sentences here. This section should address the question: "If a stakeholder were to take away 3 main insights from your project, what are the most important things they should know?" You can put yourself in the shoes of a specific stakeholder - for example, a marketing manager or finance director - to think creatively about this section.
+    Provide a concise summary of the project findings, key takeaways, and how they address the company’s goals or challenges. Include up to 3 key insights that would be most impactful to stakeholders.
 
-    [Visualization, including a graph of overall trends or snapshot of a dashboard]
-
-    # Insights Deep Dive
-    ### Category 1:
-    * **Main insight 1.** Detail about trends and observations.
-    * **Main insight 2.** Detail about trends and observations.
-    [Visualization specific to category 1]
-
-    ### Category 2:
-    * **Main insight 1.** Detail about trends and observations.
-    * **Main insight 2.** Detail about trends and observations.
-    [Visualization specific to category 2]
-
-    ### Category 3:
-    * **Main insight 1.** Detail about trends and observations.
-    * **Main insight 2.** Detail about trends and observations.
-    [Visualization specific to category 3]
-
-    ### Category 4:
-    * **Main insight 1.** Detail about trends and observations.
-    * **Main insight 2.** Detail about trends and observations.
-    [Visualization specific to category 4]
-
-    # Recommendations
-    Based on the insights and findings above, we would recommend the [stakeholder team] to consider the following: 
-    * Observation and related recommendation.
-    * Observation and related recommendation.
-
-    # Assumptions and Caveats
-    * Assumption 1.
-    * Assumption 2.
-
-    Return this template as markdown.
+    Return the report in a well-formatted markdown format, making it easy to read and include headings, subheadings, and bullet points.
     """
 
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "You are an assistant."},
+                {"role": "system", "content": "You are a data analytics assistant."},
                 {"role": "user", "content": prompt},
             ]
         )
@@ -147,17 +109,10 @@ def generate_pdf(template):
         # Encode to latin-1 or replace unsupported characters
         sanitized_line = line.encode("latin-1", "replace").decode("latin-1")
         pdf.multi_cell(0, 10, sanitized_line)
-    
-    # Output PDF content to a string
-    pdf_output_content = pdf.output(dest='S').encode('latin1')  # Save PDF to string in binary
-    
-    # Write the binary content to BytesIO
-    pdf_output = io.BytesIO(pdf_output_content)
+    pdf_output = io.BytesIO()
+    pdf.output(pdf_output, dest='S')
+    pdf_output.seek(0)
     return pdf_output
 
 if __name__ == "__main__":
     main()
-
-
-
-
