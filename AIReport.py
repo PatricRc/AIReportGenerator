@@ -32,7 +32,7 @@ def main():
         st.write(f"Number of columns: {df.shape[1]}")
 
         if st.button("Generate Report with AI"):
-            template = generate_template(df)
+            template = generate_template(df, openai_api_key)
             st.markdown(template, unsafe_allow_html=True)
 
             # Provide download button for the HTML report
@@ -52,8 +52,10 @@ def load_data(uploaded_file):
     elif uploaded_file.name.endswith(".xlsx"):
         return pd.read_excel(uploaded_file)
 
-def generate_template(df):
+def generate_template(df, api_key):
     """Generate the project template based on the uploaded data."""
+    openai.api_key = api_key
+
     prompt = f"""
     I have a dataset with the following columns:
     {', '.join(df.columns)}.
@@ -126,6 +128,7 @@ def generate_template(df):
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
+                {"role": "system", "content": "You are an assistant."},
                 {"role": "user", "content": prompt},
             ]
         )
