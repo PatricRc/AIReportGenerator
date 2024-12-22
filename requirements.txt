@@ -1,0 +1,14 @@
+matplotlib
+seaborn
+pandas
+numpy
+streamlit
+openpyxl
+scikit-learn
+pandasai
+requests
+PyYAML
+langchain
+chromadb
+langchain-community
+openai
