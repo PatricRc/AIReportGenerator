@@ -12,3 +12,4 @@ langchain
 chromadb
 langchain-community
 openai==0.28
+fpdf
