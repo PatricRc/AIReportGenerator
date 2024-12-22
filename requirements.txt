@@ -11,4 +11,4 @@ PyYAML
 langchain
 chromadb
 langchain-community
-openai
+openai==0.28
