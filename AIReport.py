@@ -126,9 +126,8 @@ def generate_template(df):
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are an assistant."},
                 {"role": "user", "content": prompt},
-            ],
+            ]
         )
         return response["choices"][0]["message"]["content"].strip()
     except Exception as e:
@@ -136,4 +135,5 @@ def generate_template(df):
 
 if __name__ == "__main__":
     main()
+
 
