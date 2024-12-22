@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import openai
 import io
+from fpdf import FPDF
 
 def main():
     st.title("AI-Powered Data Analytics Template Generator")
@@ -35,14 +36,14 @@ def main():
             template = generate_template(df, openai_api_key)
             st.markdown(template, unsafe_allow_html=True)
 
-            # Provide download button for the HTML report
+            # Provide download button for the PDF report
             st.markdown("### Download Report")
-            html_report = f"<html><body>{template}</body></html>"
+            pdf_report = generate_pdf(template)
             st.download_button(
-                label="Download HTML Report",
-                data=html_report,
-                file_name="report.html",
-                mime="text/html"
+                label="Download PDF Report",
+                data=pdf_report,
+                file_name="report.pdf",
+                mime="application/pdf"
             )
 
 def load_data(uploaded_file):
@@ -126,7 +127,7 @@ def generate_template(df, api_key):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are an assistant."},
                 {"role": "user", "content": prompt},
@@ -136,7 +137,21 @@ def generate_template(df, api_key):
     except Exception as e:
         return f"Error generating template: {e}"
 
+def generate_pdf(template):
+    """Generate a PDF from the markdown template."""
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Arial", size=12)
+    for line in template.splitlines():
+        pdf.multi_cell(0, 10, line)
+    pdf_output = io.BytesIO()
+    pdf.output(pdf_output)
+    pdf_output.seek(0)
+    return pdf_output
+
 if __name__ == "__main__":
     main()
+
 
 
