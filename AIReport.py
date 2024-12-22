@@ -62,7 +62,7 @@ def generate_template(df, api_key):
     {', '.join(df.columns)}.
 
     Here are the first few rows of the dataset:
-    {df.head(5).to_string(index=False)}
+    {df.to_string(index=False)}
 
     Please generate a detailed and well-formatted data analytics project report with the following structure:
 
@@ -110,9 +110,10 @@ def generate_pdf(template):
         sanitized_line = line.encode("latin-1", "replace").decode("latin-1")
         pdf.multi_cell(0, 10, sanitized_line)
     pdf_output = io.BytesIO()
-    pdf.output(pdf_output, dest='S')
+    pdf.output(pdf_output)
     pdf_output.seek(0)
-    return pdf_output
+    return pdf_output.getvalue()
 
 if __name__ == "__main__":
     main()
+
