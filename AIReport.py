@@ -144,7 +144,9 @@ def generate_pdf(template):
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.set_font("Arial", size=12)
     for line in template.splitlines():
-        pdf.multi_cell(0, 10, line)
+        # Encode to latin-1 or replace unsupported characters
+        sanitized_line = line.encode("latin-1", "replace").decode("latin-1")
+        pdf.multi_cell(0, 10, sanitized_line)
     pdf_output = io.BytesIO()
     pdf.output(pdf_output)
     pdf_output.seek(0)
@@ -152,6 +154,7 @@ def generate_pdf(template):
 
 if __name__ == "__main__":
     main()
+
 
 
 
