@@ -62,7 +62,7 @@ def generate_template(df, api_key):
     {', '.join(df.columns)}.
 
     Here are the first few rows of the dataset:
-    {df.to_string(index=False)}
+    {df.head(100).to_string(index=False)}
 
     Please generate a detailed and well-formatted data analytics project report with the following structure:
 
@@ -116,4 +116,3 @@ def generate_pdf(template):
 
 if __name__ == "__main__":
     main()
-
