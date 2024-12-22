@@ -109,8 +109,9 @@ def generate_pdf(template):
         # Encode to latin-1 or replace unsupported characters
         sanitized_line = line.encode("latin-1", "replace").decode("latin-1")
         pdf.multi_cell(0, 10, sanitized_line)
+    
     pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
+    pdf.output(dest='F', name=pdf_output)  # Write PDF to BytesIO object
     pdf_output.seek(0)
     return pdf_output.getvalue()
 
