@@ -3,11 +3,19 @@ import pandas as pd
 import openai
 import io
 
-# Set up OpenAI API Key
-openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your OpenAI API key
-
 def main():
     st.title("AI-Powered Data Analytics Template Generator")
+
+    # Input for OpenAI API Key
+    st.markdown("### Enter your OpenAI API Key")
+    openai_api_key = st.text_input("API Key", type="password")
+
+    if not openai_api_key:
+        st.warning("Please enter your OpenAI API Key to proceed.")
+        return
+
+    # Set the OpenAI API key dynamically
+    openai.api_key = openai_api_key
 
     # Upload File Section
     st.markdown("### Upload Your Dataset")
@@ -128,3 +136,4 @@ def generate_template(df):
 
 if __name__ == "__main__":
     main()
+
