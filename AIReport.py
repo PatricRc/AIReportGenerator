@@ -89,7 +89,7 @@ def generate_template(df, api_key):
 
     try:
         response = openai.ChatCompletion.create(
-            model="o1-mini",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a data analytics assistant."},
                 {"role": "user", "content": prompt},
